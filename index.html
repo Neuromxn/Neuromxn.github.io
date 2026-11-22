@@ -22,12 +22,10 @@ main{max-width:1080px;margin:0 auto;padding:clamp(20px,5vw,56px) clamp(16px,4vw,
 h1{font:700 clamp(2.2rem,7vw,4.4rem)/1.02 Georgia,"Iowan Old Style","Times New Roman",serif;letter-spacing:-.02em;margin:0 0 14px}
 .motto{font:italic clamp(1.1rem,2.6vw,1.5rem)/1.35 Georgia,"Iowan Old Style",serif;color:var(--accent);margin:0 0 28px;max-width:34ch}
 figure{margin:0}
-figcaption{font-size:.9rem;color:var(--muted);margin-top:8px;min-height:1.4em}
-.ph{all:unset;box-sizing:border-box;display:block;position:relative;width:100%;overflow:hidden;border-radius:6px;background:var(--card);cursor:pointer;touch-action:manipulation}
-.ph:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
-.ph .b{opacity:0}
-.ph.alt .b{opacity:1}
+.ph{all:unset;box-sizing:border-box;display:block;position:relative;width:100%;overflow:hidden;border-radius:6px;background:var(--card);touch-action:manipulation}
+button.ph{cursor:pointer}
+button.ph:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .group .ph{aspect-ratio:3/2}
 .ph video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s ease;pointer-events:none}
 .ph video.on{opacity:1}
@@ -40,8 +38,7 @@ h2{font:600 1.25rem/1.2 Georgia,"Iowan Old Style",serif;margin:0 0 16px;padding-
 .team .ph{aspect-ratio:4/5}
 .name{font-weight:600;margin-top:10px}
 .role{font-size:.9rem;color:var(--muted)}
-.team figcaption{margin-top:2px;min-height:0}
-@media (prefers-reduced-motion:reduce){.ph img,.ph video{transition:none}}
+@media (prefers-reduced-motion:reduce){.ph video{transition:none}}
 </style>
 </head>
 <body>
@@ -49,15 +46,15 @@ h2{font:600 1.25rem/1.2 Georgia,"Iowan Old Style",serif;margin:0 0 16px;padding-
   <h1 id="team-name"></h1>
   <p class="motto" id="motto"></p>
   <figure class="group" id="group"></figure>
-  <p class="hint">Наведите курсор или нажмите на фото, чтобы увидеть другой кадр. Общее фото сменяется коротким видеопереходом.</p>
+  <p class="hint">Наведите курсор или нажмите на общее фото, чтобы увидеть другой кадр.</p>
   <h2>Состав команды</h2>
   <div class="team" id="team"></div>
 </main>
 
 <script>
 /* ====== ЗДЕСЬ МЕНЯЕТСЯ ВСЁ СОДЕРЖИМОЕ ======
-   a — первое фото, b — фото, которое появляется при наведении/нажатии.
-   Вместо заглушек впишите свои фото (data-URI), см. функцию ph() ниже. */
+   photo у участника — путь к фото, например 'photos/ivan.jpg'.
+   Сейчас стоят заглушки ph(...) — замените их на свои пути. */
 function ph(text, hue){
   var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="hsl('+hue+',45%,38%)"/>'+
   '<circle cx="200" cy="200" r="70" fill="hsl('+hue+',45%,52%)"/><rect x="95" y="290" width="210" height="260" rx="105" fill="hsl('+hue+',45%,52%)"/>'+
@@ -68,17 +65,16 @@ var TEAM={
   name:'ТВИД - Терпеливые Воины Интелектуального Движения',
   motto:'Возможно всё. На невозможное нужно немного больше времени',
   /* Общее фото: 3 кадра по кругу. Видео i играет при переходе от кадра i к следующему
-     (1→2, 2→3, 3→1). Вместо ph(...) впишите пути: 'photos/group-1.jpg' и т. д. */
+     (1→2, 2→3, 3→1). */
   group:{
     photos:['photos/group-1.jpg', 'photos/group-2.jpg', 'photos/group-3.jpg'],
-    videos:['videos/transition-1-2.mp4','videos/transition-2-3.mp4','videos/transition-3-1.mp4'],
-    captions:['Подпись к кадру 1','Подпись к кадру 2','Подпись к кадру 3']
+    videos:['videos/transition-1-2.mp4','videos/transition-2-3.mp4','videos/transition-3-1.mp4']
   },
   members:[
-    {name:'Имя Фамилия',role:'Руководитель',a:ph('Фото 1',215),b:ph('Фото 2',20),capA:'В лабораторном халате',capB:'С полевым оборудованием'},
-    {name:'Имя Фамилия',role:'Исследователь',a:ph('Фото 1',160),b:ph('Фото 2',330),capA:'За микроскопом',capB:'С дроном'},
-    {name:'Имя Фамилия',role:'Аналитик',a:ph('Фото 1',270),b:ph('Фото 2',45),capA:'За ноутбуком',capB:'С датчиками'},
-    {name:'Имя Фамилия',role:'Инженер',a:ph('Фото 1',190),b:ph('Фото 2',300),capA:'В мастерской',capB:'На выезде'}
+    {name:'Имя Фамилия',role:'Руководитель',photo:ph('Фото',215)},
+    {name:'Имя Фамилия',role:'Исследователь',photo:ph('Фото',160)},
+    {name:'Имя Фамилия',role:'Аналитик',photo:ph('Фото',270)},
+    {name:'Имя Фамилия',role:'Инженер',photo:ph('Фото',190)}
   ]
 };
 /* ====== КОНЕЦ НАСТРОЕК ====== */
@@ -89,26 +85,11 @@ var canHover=window.matchMedia('(hover: hover)').matches;
 var TRIGGER='both';
 var REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function photo(parent,src1,src2,cap1,cap2,alt){
-  var btn=document.createElement('button');
-  btn.type='button'; btn.className='ph'; btn.setAttribute('aria-pressed','false');
-  btn.setAttribute('aria-label',alt+': показать другое фото');
-  btn.innerHTML='<img class="a" alt="'+alt+', '+cap1+'"><img class="b" alt="'+alt+', '+cap2+'">';
-  btn.querySelector('.a').src=src1; btn.querySelector('.b').src=src2;
-  var cap=document.createElement('figcaption'); cap.textContent=cap1;
-  function set(on){btn.classList.toggle('alt',on);btn.setAttribute('aria-pressed',on);cap.textContent=on?cap2:cap1;}
-  var last='mouse';
-  btn.addEventListener('pointerdown',function(e){last=e.pointerType;});
-  if(canHover){
-    btn.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')set(true);});
-    btn.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse')set(false);});
-  }
-  btn.addEventListener('click',function(e){
-    if(e.detail>0&&last==='mouse'&&canHover)return; /* мышь уже обработана наведением */
-    set(!btn.classList.contains('alt'));
-  });
-  parent.appendChild(btn); parent.appendChild(cap);
-  return btn;
+/* Фото участника: одно, без смены кадров */
+function portrait(parent,src,alt){
+  var d=document.createElement('div'); d.className='ph';
+  var im=document.createElement('img'); im.src=src; im.alt=alt;
+  d.appendChild(im); parent.appendChild(d);
 }
 
 /* Общее фото: кадры по кругу, между ними играет видеопереход, затем появляется статичное фото */
@@ -122,11 +103,10 @@ function videoGallery(parent,cfg,alt){
     v.muted=true; v.setAttribute('muted',''); v.setAttribute('playsinline',''); v.preload='none';
     v.setAttribute('aria-hidden','true'); btn.appendChild(v); return v;
   });
-  var cap=document.createElement('figcaption');
   var dots=document.createElement('div'); dots.className='dots';
   for(var k=0;k<n;k++)dots.appendChild(document.createElement('i'));
   function render(){
-    img.src=cfg.photos[i]; img.alt=alt+', '+cfg.captions[i]; cap.textContent=cfg.captions[i];
+    img.src=cfg.photos[i]; img.alt=alt+', кадр '+(i+1)+' из '+n;
     [].forEach.call(dots.children,function(d,j){d.classList.toggle('on',j===i);});
   }
   function prime(j){ /* подгружаем видео и фото, которые понадобятся следующими */
@@ -158,7 +138,7 @@ function videoGallery(parent,cfg,alt){
     if(TRIGGER==='hover'&&last==='mouse'&&e.detail>0)return;
     next();
   });
-  parent.appendChild(btn); parent.appendChild(cap); parent.appendChild(dots);
+  parent.appendChild(btn); parent.appendChild(dots);
   render(); prime(0);
 }
 
@@ -169,7 +149,7 @@ videoGallery(document.getElementById('group'),TEAM.group,'Общее фото к
 var box=document.getElementById('team');
 TEAM.members.forEach(function(m){
   var f=document.createElement('figure');
-  photo(f,m.a,m.b,m.capA,m.capB,m.name);
+  portrait(f,m.photo,m.name+', '+m.role);
   var n=document.createElement('div'); n.className='name'; n.textContent=m.name;
   var r=document.createElement('div'); r.className='role'; r.textContent=m.role;
   f.appendChild(n); f.appendChild(r); box.appendChild(f);
